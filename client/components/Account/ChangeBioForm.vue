@@ -4,20 +4,20 @@
 import BlockForm from '@/components/common/BlockForm.vue';
 
 export default {
-  name: 'ChangeUsernameForm',
+  name: 'ChangeBioForm',
   mixins: [BlockForm],
   data() {
     return {
       url: '/api/users',
       method: 'PUT',
       hasBody: true,
-      setUsername: true,
+      setBio: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''}
+        {id: 'bio', label: 'Bio', value: ''}
       ],
-      title: 'Change username',
+      title: 'Change bio',
       callback: () => {
-        const message = 'Successfully changed username!';
+        const message = 'Successfully changed bio!';
         this.$set(this.alerts, message, 'success');
         setTimeout(() => this.$delete(this.alerts, message), 3000);
       }

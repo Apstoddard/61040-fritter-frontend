@@ -6,8 +6,14 @@
     <section>
       <header>
         <h2>Account settings for @{{ $store.state.username }}</h2>
+        <p><b>Name:</b> {{ $store.state.firstName }} {{ $store.state.lastName }}</p>
+        <p><b>Email:</b> {{ $store.state.email }}</p>
+        <p><b>Bio:</b> {{ $store.state.bio }}</p>
+        <p><b>Date Joined:</b> {{ $store.state.dateJoined }}</p>
       </header>
       <ChangeUsernameForm />
+      <ChangeEmailForm />
+      <ChangeBioForm />
       <ChangePasswordForm />
     </section>
     <section>
@@ -23,6 +29,8 @@
 <script>
 import ChangeUsernameForm from '@/components/Account/ChangeUsernameForm.vue';
 import ChangePasswordForm from '@/components/Account/ChangePasswordForm.vue';
+import ChangeBioForm from '@/components/Account/ChangeBioForm.vue'
+import ChangeEmailForm from '@/components/Account/ChangeEmailForm.vue'
 import DeleteAccountForm from '@/components/Account/DeleteAccountForm.vue';
 import LogoutForm from '@/components/Account/LogoutForm.vue';
 
@@ -31,6 +39,8 @@ export default {
   components: {
     ChangeUsernameForm,
     ChangePasswordForm,
+    ChangeBioForm,
+    ChangeEmailForm,
     DeleteAccountForm,
     LogoutForm
   }

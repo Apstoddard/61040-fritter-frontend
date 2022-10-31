@@ -12,6 +12,11 @@ export default {
       method: 'POST',
       hasBody: true,
       setUsername: true,
+      setFirstName: true,
+      setLastName: true,
+      setBio: true,
+      setEmail: true,
+      setDateJoined: true,
       fields: [
         {id: 'username', label: 'Username', value: ''},
         {id: 'password', label: 'Password', value: ''}

@@ -49,8 +49,7 @@
       {{ freet.content }}
     </p>
     <p class="info">
-      Posted at {{ freet.dateModified }}
-      <i v-if="freet.edited">(edited)</i>
+      Posted at {{ freet.dateCreated }}
     </p>
     <section class="alerts">
       <article

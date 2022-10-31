@@ -19,7 +19,12 @@ export default {
       credentials: 'same-origin' // Sends express-session credentials with request
     }).then(res => res.json()).then(res => {
       const user = res.user;
+      this.$store.commit('setFirstName', user ? user.first_name : null);
+      this.$store.commit('setLastName', user ? user.last_name : null);
+      this.$store.commit('setEmail', user ? user.email : null);
       this.$store.commit('setUsername', user ? user.username : null);
+      this.$store.commit('setBio', user ? user.bio : null);
+      this.$store.commit('setDateJoined', user ? user.dateJoined : null);
     });
 
     // Clear alerts on page refresh

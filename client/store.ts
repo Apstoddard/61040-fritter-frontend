@@ -12,6 +12,11 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
+    bio: null, // Bio of the logged in user
+    firstName: null, // First name of the logged in user
+    lastName: null, // Last name of the logged in user
+    email: null, // Email of the logged in user
+    dateJoined: null, // Date the logged in user joined
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -30,6 +35,41 @@ const store = new Vuex.Store({
        * @param username - new username to set
        */
       state.username = username;
+    },
+    setFirstName(state, firstName) {
+      /**
+       * Update the stored first name to the specified one.
+       * @param firstName - new first name to set
+       */
+      state.firstName = firstName;
+    },
+    setLastName(state, lastName) {
+      /**
+       * Update the stored last name to the specified one.
+       * @param lastName - new last name to set
+       */
+      state.lastName = lastName;
+    },
+    setEmail(state, email) {
+      /**
+       * Update the stored email to the specified one.
+       * @param email - new email to set
+       */
+      state.email = email;
+    },
+    setBio(state, bio) {
+      /**
+       * Update the stored username to the specified one.
+       * @param bio - new bio to set
+       */
+      state.bio = bio;
+    },
+    setDateJoined(state, dateJoined) {
+      /**
+       * Update the stored username to the specified one.
+       * @param bio - new bio to set
+       */
+      state.dateJoined = dateJoined;
     },
     updateFilter(state, filter) {
       /**

@@ -59,7 +59,12 @@ export default {
       url: '', // Url to submit form to
       method: 'GET', // Form request method
       hasBody: false, // Whether or not form request has a body
+      setEmail: false,
+      setFirstName: false,
+      setLastName: false,
       setUsername: false, // Whether or not stored username should be updated after form submission
+      setBio: false, // Whether or not stored bio should be updated after form submission
+      setDateJoined: false,
       refreshFreets: false, // Whether or not stored freets should be updated after form submission
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
@@ -93,10 +98,31 @@ export default {
           throw new Error(res.error);
         }
 
+        const text = await r.text();
+        const res = text ? JSON.parse(text) : {user: null};
+
         if (this.setUsername) {
-          const text = await r.text();
-          const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setUsername', res.user ? res.user.username : null);
+        }
+
+        if (this.setEmail) {
+          this.$store.commit('setEmail', res.user ? res.user.email : null);
+        }
+
+        if (this.setFirstName) {
+          this.$store.commit('setFirstName', res.user ? res.user.first_name : null);
+        }
+
+        if (this.setLastName) {
+          this.$store.commit('setLastName', res.user ? res.user.last_name : null);
+        }
+
+        if (this.setBio) {
+          this.$store.commit('setBio', res.user ? res.user.bio : null);
+        }
+
+        if (this.setDateJoined) {
+          this.$store.commit('setDateJoined', res.user ? res.user.dateJoined : null);
         }
 
         if (this.refreshFreets) {
