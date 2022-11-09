@@ -193,4 +193,24 @@ router.get(
   }
 );
 
+/**
+ * Get user with username
+ *
+ * @name GET /api/users/:username
+ *
+ * @return {UserResponse} - User
+ *
+ */
+router.get(
+  '/:user',
+  [
+    userValidator.isUserExist
+  ],
+  async (req: Request, res: Response) => {
+    const user = await UserCollection.findOneByUsername(req.params.user);
+    const response = util.constructUserResponse(user);
+    res.status(200).json(response);
+  }
+);
+
 export {router as userRouter};

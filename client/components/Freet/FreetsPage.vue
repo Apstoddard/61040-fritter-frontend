@@ -1,58 +1,39 @@
 <!-- Default page that also displays freets -->
 
 <template>
-  <main>
-    <section v-if="$store.state.username">
+  <main>    
+    <section class="freetsPage">
       <header>
-        <h2>Welcome @{{ $store.state.username }}</h2>
-      </header>
-      <CreateFreetForm />
-    </section>
-    <section v-else>
-      <header>
-        <h2>Welcome to Fritter!</h2>
-      </header>
-      <article>
-        <h3>
-          <router-link to="/login">
-            Sign in
-          </router-link>
-          to create, edit, and delete freets.
-        </h3>
-      </article>
-    </section>
-    <section>
-      <header>
-        <div class="left">
-          <h2>
-            Viewing all freets
-            <span v-if="$store.state.filter">
-              by @{{ $store.state.filter }}
-            </span>
-          </h2>
-        </div>
-        <div class="right">
-          <GetFreetsForm
-            ref="getFreetsForm"
-            value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get freets"
-          />
-        </div>
-      </header>
-      <section
-        v-if="$store.state.freets.length"
-      >
-        <FreetComponent
-          v-for="freet in $store.state.freets"
-          :key="freet.id"
-          :freet="freet"
+        <h1>
+          {{ header }}
+        </h1>
+        <FritterButton 
+          v-if="back"
+          class="backButton"
+          label="Back"
+          back-icon
+          @click.native="$router.go(-1)"
         />
-      </section>
-      <article
-        v-else
-      >
-        <h3>No freets found.</h3>
+      </header>
+      <article class="freets">
+        <h3 class="freetsHeader">
+          {{ circle }}
+        </h3>
+        <section
+          v-if="freets.length"
+          class="freetsSection"
+        >
+          <FreetComponent
+            v-for="freet in freets"
+            :key="freet.id"
+            :freet="freet"
+          />
+        </section>
+        <article
+          v-else
+        >
+          <h3>No freets found.</h3>
+        </article>
       </article>
     </section>
   </main>
@@ -60,37 +41,92 @@
 
 <script>
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
-import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
-import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
+import FritterButton from '@/components/common/FritterButton.vue';
 
 export default {
   name: 'FreetPage',
-  components: {FreetComponent, GetFreetsForm, CreateFreetForm},
-  mounted() {
-    this.$refs.getFreetsForm.submit();
+  components: {FreetComponent, FritterButton},
+  props: {
+    freets: {
+      type: Array,
+      default: null
+    },
+    header: {
+      type: String,
+      default: 'Freets'
+    },
+    circle: {
+      type: String,
+      default: 'Circle'
+    },
+    back: {
+      type: Boolean
+    }
   }
 };
 </script>
 
 <style scoped>
-section {
+header {
+  height: 80px;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 72px;
+  color: #000000;
+  text-transform: uppercase;
+  margin: 0px;
+  float: left;
+  line-height: 80px;
+}
+
+h3 {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  color: #000000;
+  margin: 0px;
+}
+
+main {
+  height: 100%;
+  max-height: 840px;
+}
+
+.freets {
+  background-color: #D9D9D9;
+  height: calc(100% - 96px);
+}
+.backButton {
+  float: right;
+  margin-right: 24px;
+}
+
+.freetsPage {
+  height: 100%;
+}
+
+.freetsHeader {
+  height: 96px;
+  line-height: 96px;
+  margin-left: 32px;
+}
+
+.freetsSection {
+  height: calc(100% - 96px);
+  position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 32px;
+  overflow-x: scroll;
+  margin-left: 32px;
+
 }
 
-header, header > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-button {
-    margin-right: 10px;
-}
-
-section .scrollbox {
-  flex: 1 0 50vh;
-  padding: 3%;
-  overflow-y: scroll;
-}
 </style>

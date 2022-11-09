@@ -17,6 +17,7 @@ export default {
       setBio: true,
       setEmail: true,
       setDateJoined: true,
+      refreshAroundMe: true,
       fields: [
         {id: 'first_name', label: 'First Name', value: ''},
         {id: 'last_name', label: 'Last Name', value: ''},
@@ -27,7 +28,7 @@ export default {
       title: 'Create account',
       callback: () => {
         const message = 'Successfully created an account!';
-        this.$router.push({name: 'Home'});
+        this.$router.push({name: 'Around Me'});
         this.$set(this.alerts, message, 'success');
         setTimeout(() => this.$delete(this.alerts, message), 3000);
       }

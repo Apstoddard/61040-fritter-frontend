@@ -1,6 +1,7 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import CircleCollection from './collection';
+import SubscribeCollection from '../subscribe/collection';
 import * as userValidator from '../user/middleware';
 import * as circleValidator from '../circle/middleware';
 import * as util from './util';
@@ -90,11 +91,31 @@ router.post(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const circle = await CircleCollection.addOne(req.body.title, req.body.bio, req.body.category, userId);
-
+    await SubscribeCollection.addOne(userId, circle._id);
     res.status(201).json({
       message: 'Your circle was created successfully.',
       circle: util.constructCircleResponse(circle)
     });
+  }
+);
+
+/**
+ * Get a circle
+ *
+ * @name GET /api/circles/:title
+ *
+ * @return {string} - A success message
+ * @throws {404} - If the title is not valid
+ */
+router.get(
+  '/:title?',
+  [
+    circleValidator.isCircleTitleParamsExist
+  ],
+  async (req: Request, res: Response) => {
+    const circle = await CircleCollection.findOneByTitle(req.params.title);
+    const response = util.constructCircleResponse(circle);
+    res.status(200).json(response);
   }
 );
 

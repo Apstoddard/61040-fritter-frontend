@@ -11,11 +11,12 @@ export default {
       url: '/api/freets',
       method: 'POST',
       hasBody: true,
-      fields: [
-        {id: 'content', label: 'Content', value: ''}
-      ],
       title: 'Create a freet',
       refreshFreets: true,
+      fields: [
+        {id: 'content', label: 'Content', value: ''},
+        {id: 'circles', label: 'Circles', value: '', options: [{...this.$store.state.aroundMeCircle, title: "Around Me"}, ...this.$store.state.myCirclesCircles]}
+      ],
       callback: () => {
         const message = 'Successfully created a freet!';
         this.$set(this.alerts, message, 'success');

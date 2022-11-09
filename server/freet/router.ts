@@ -3,6 +3,7 @@ import express from 'express';
 import FreetCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
+import * as circleValidator from '../circle/middleware';
 import * as util from './util';
 
 const router = express.Router();
@@ -25,11 +26,21 @@ const router = express.Router();
  * @throws {404} - If no user has given username
  *
  */
+/**
+ * Get freets by circle.
+ *
+ * @name GET /api/freets?circle=circleId
+ *
+ * @return {FreetResponse[]} - An array of freets in circle with circleId
+ * @throws {400} - If circleId is not given
+ * @throws {404} - If no circle has given circleId
+ *
+ */
 router.get(
   '/',
   async (req: Request, res: Response, next: NextFunction) => {
     // Check if authorId query parameter was supplied
-    if (req.query.author !== undefined) {
+    if (req.query.author !== undefined || req.query.circleId !== undefined) {
       next();
       return;
     }
@@ -41,9 +52,22 @@ router.get(
   [
     userValidator.isAuthorExists
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.author === undefined) {
+      next();
+      return;
+    }
+
     const authorFreets = await FreetCollection.findAllByUsername(req.query.author as string);
     const response = authorFreets.map(util.constructFreetResponse);
+    res.status(200).json(response);
+  },
+  [
+    circleValidator.isQueryCircleExists
+  ],
+  async (req: Request, res: Response) => {
+    const circleFreets = await FreetCollection.findAllInCircle(req.query.circleId as string);
+    const response = circleFreets.map(util.constructFreetResponse);
     res.status(200).json(response);
   }
 );

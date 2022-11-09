@@ -3,7 +3,6 @@
 
 <template>
   <form @submit.prevent="submit">
-    <h3>{{ title }}</h3>
     <article
       v-if="fields.length"
     >
@@ -11,16 +10,27 @@
         v-for="field in fields"
         :key="field.id"
       >
-        <label :for="field.id">{{ field.label }}:</label>
         <textarea
-          v-if="field.id === 'content'"
+          v-if="field.id === 'content' || field.id === 'bio'"
+          :placeholder="field.label"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
         />
+        <multiselect 
+          v-else-if="field.id === 'circles'" 
+          v-model="field.value"
+          class="multiselect"
+          track-by="_id" 
+          label="title"
+          placeholder="Select Circles"
+          :multiple="true"
+          :options="field.options" 
+        />
         <input
           v-else
           :type="field.id === 'password' ? 'password' : 'text'"
+          :placeholder="field.label"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
@@ -49,8 +59,11 @@
 
 <script>
 
+import Multiselect from 'vue-multiselect'
+
 export default {
   name: 'BlockForm',
+  components: {Multiselect},
   data() {
     /**
      * Options for submitting this form.
@@ -66,6 +79,8 @@ export default {
       setBio: false, // Whether or not stored bio should be updated after form submission
       setDateJoined: false,
       refreshFreets: false, // Whether or not stored freets should be updated after form submission
+      refreshCircles: false, // Whether or not stored circles should be updated after form submission
+      refreshAroundMe: false,
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
     };
@@ -126,7 +141,22 @@ export default {
         }
 
         if (this.refreshFreets) {
-          this.$store.commit('refreshFreets');
+          this.$store.commit('refreshGlobalFreets');
+          this.$store.commit('refreshMyCirclesFreets');
+          this.$store.commit('refreshAroundMeFreets');
+          this.$store.commit('refreshAroundMeLocation');
+          
+        }
+
+        if (this.refreshCircles) {
+          this.$store.commit('refreshGlobalCategories');
+          this.$store.commit('refreshGlobalCircles');
+          this.$store.commit('refreshAroundMeLocation');
+          this.$store.commit('refreshSubscribes');
+        }
+
+        if(this.refreshAroundMe) {
+          this.$store.commit('refreshAroundMeLocation');
         }
 
         if (this.callback) {
@@ -141,15 +171,20 @@ export default {
 };
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
 <style scoped>
 form {
-  border: 1px solid #111;
-  padding: 0.5rem;
+  background-color: #D9D9D9;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 14px;
   position: relative;
+  font-family: Helvetica;
+  width: calc(100% - 24px);
+  
 }
 
 article > div {
@@ -161,17 +196,41 @@ form > article p {
   margin: 0;
 }
 
-form h3,
-form > * {
-  margin: 0.3em 0;
-}
-
 form h3 {
   margin-top: 0;
 }
 
-textarea {
-   font-family: inherit;
-   font-size: inherit;
+textarea, input {
+  border: none;
+  margin: 12px;
+  font-size: 18px;
+  font-family: Helvetica;
+  padding: 12px 8px;
 }
+.multiselect {
+  border: none;
+  margin: 12px;
+  font-size: 18px;
+  font-family: Helvetica;
+  width: calc(100% - 24px);
+}
+
+
+button {
+  width: max-content;
+  height: 48px;
+  background: #0D579A;
+  border: none;
+  padding: 0px 32px;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-size: 24px;
+  text-align: left;
+  font-family: Helvetica;
+  float: left;
+  height: 48px;
+  line-height: 48px;
+  margin: 12px;
+}
+
 </style>

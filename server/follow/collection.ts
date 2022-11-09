@@ -37,7 +37,6 @@ class FollowCollection {
    */
   static async findOne(userId: Types.ObjectId | string, followingName: string): Promise<HydratedDocument<Follow>> {
     const following = await UserCollection.findOneByUsername(followingName);
-    console.log(following);
     return FollowModel.findOne({user: userId, following: following._id}).populate('user').populate('following');
   }
 

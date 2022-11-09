@@ -53,6 +53,17 @@ class FreetCollection {
   }
 
   /**
+   * Get all the freets in the database in a given circle
+   *
+   *  @param {string} circleId - The id of the circle to find freets in
+   * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets in a circle
+   */
+  static async findAllInCircle(circleId: Types.ObjectId | string): Promise<Array<HydratedDocument<Freet>>> {
+    // Retrieves freets in circle and sorts them from most to least recent
+    return FreetModel.find({circles: circleId}).sort({dateModified: -1}).populate('author').populate('circles');
+  }
+
+  /**
    * Get all the freets in by given author
    *
    * @param {string} username - The username of author of the freets
@@ -60,7 +71,7 @@ class FreetCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return FreetModel.find({author: author._id}).populate('author').populate('circles');
+    return FreetModel.find({author: author._id}).sort({dateModified: -1}).populate('author').populate('circles');
   }
 
   /**
@@ -72,7 +83,7 @@ class FreetCollection {
    */
   static async updateOne(freetId: Types.ObjectId | string, circleIds: [Types.ObjectId | string]): Promise<HydratedDocument<Freet>> {
     const freet = await FreetModel.findOne({_id: freetId});
-    freet.circles = circleIds? circleIds.map(id => new Types.ObjectId(id)) : [];
+    freet.circles = circleIds ? circleIds.map(id => new Types.ObjectId(id)) : [];
     await freet.save();
     await freet.populate('circles');
     return freet.populate('author');

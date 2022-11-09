@@ -1,4 +1,4 @@
-<!-- Form for getting freets (all, from user) (inline style) -->
+<!-- 
 
 <script>
 import InlineForm from '@/components/common/InlineForm.vue';
@@ -40,3 +40,5 @@ export default {
   }
 };
 </script>
+
+-->

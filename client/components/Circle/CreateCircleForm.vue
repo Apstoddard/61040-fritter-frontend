@@ -17,6 +17,7 @@ export default {
         {id: 'category', label: 'Category', value: ''}
       ],
       title: 'Create a circle',
+      refreshCircles: true,
       callback: () => {
         const message = 'Successfully created a circle!';
         this.$set(this.alerts, message, 'success');

@@ -1,18 +1,24 @@
 <template>
   <div id="app">
-    <header>
+    <aside v-if="$store.state.username && ($route.path.includes('/global') || $route.path.includes('/my-circles') || $route.path.includes('/around-me'))">
+      <ZoomBar />
+    </aside>
+    <router-view 
+      :class="['view', { full: !$store.state.username || !($route.path.includes('/global') || $route.path.includes('/my-circles') || $route.path.includes('/around-me'))}]" 
+    />
+    <footer>
       <NavBar />
-    </header>
-    <router-view />
+    </footer>
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/common/NavBar.vue';
+import ZoomBar from '@/components/common/ZoomBar.vue';
 
 export default {
   name: 'App',
-  components: {NavBar},
+  components: {NavBar, ZoomBar},
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {
@@ -29,6 +35,8 @@ export default {
 
     // Clear alerts on page refresh
     this.$store.state.alerts = {};
+
+    
   }
 };
 </script>
@@ -45,10 +53,6 @@ body {
   padding: 0;
   margin: 0;
   font-size: 1.2em;
-}
-
-main {
-  padding: 0 5em 5em;
 }
 
 .alerts {
@@ -78,5 +82,19 @@ main {
 
 .alerts .success {
     background-color: rgb(45, 135, 87);
+}
+
+.view {
+  position: absolute;
+  height: calc(100vh - 232px);
+  width: calc(100% - 160px);
+  top: 64px;
+  left: 160px;
+  overflow-y: scroll;
+}
+
+.full {
+  width: calc(100% - 24px);
+  left: 24px;
 }
 </style>

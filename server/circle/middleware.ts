@@ -75,6 +75,24 @@ const isCircleTitleNotAlreadyInUse = async (req: Request, res: Response, next: N
 };
 
 /**
+ * Checks if a circle title in req.params is already in use
+ */
+const isCircleTitleParamsExist = async (req: Request, res: Response, next: NextFunction) => {
+  const circle = await CircleCollection.findOneByTitle(req.params.title);
+
+  if (circle) {
+    next();
+    return;
+  }
+
+  res.status(404).json({
+    error: {
+      circleNotFound: 'A circle with this name does not exist'
+    }
+  });
+};
+
+/**
  * Checks if a category in req.query exists
  */
 const isCategoryExists = async (req: Request, res: Response, next: NextFunction) => {
@@ -123,5 +141,6 @@ export {
   isQueryCircleExists,
   isCircleTitleNotAlreadyInUse,
   isCategoryExists,
-  isValidCircleModifier
+  isValidCircleModifier,
+  isCircleTitleParamsExist
 };
