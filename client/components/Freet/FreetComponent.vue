@@ -156,12 +156,15 @@ export default {
         this.$store.commit('refreshMyCirclesFreets');
         this.$store.commit('refreshAroundMeFreets');
         this.$store.commit('refreshAroundMeLocation');
+        this.$store.commit('refreshLikes');
 
         params.callback();
       } catch (e) {
         this.$set(this.alerts, e, 'error');
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }
+
+      this.$emit('freet-update');
     },
     async likeRequest(params) {
       /**
@@ -281,10 +284,15 @@ button {
   border: none;
   margin: 0px;
   padding: 0px;
+  cursor: pointer;
 }
 .icon {
   height: 24px;
   width: 24px;
+}
+
+.author {
+  cursor: pointer;
 }
 
 </style>

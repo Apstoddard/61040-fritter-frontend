@@ -145,7 +145,7 @@ export default {
           this.$store.commit('refreshMyCirclesFreets');
           this.$store.commit('refreshAroundMeFreets');
           this.$store.commit('refreshAroundMeLocation');
-          
+          this.$store.commit('refreshLikes');
         }
 
         if (this.refreshCircles) {

@@ -18,6 +18,7 @@ export default {
       setEmail: true,
       setDateJoined: true,
       refreshAroundMe: true,
+      refreshCircles: true,
       fields: [
         {id: 'username', label: 'Username', value: ''},
         {id: 'password', label: 'Password', value: ''}

@@ -30,3 +30,9 @@ export default {
   }
 };
 </script>
+
+<style>
+main {
+  font-family: Helvetica;
+}
+</style>

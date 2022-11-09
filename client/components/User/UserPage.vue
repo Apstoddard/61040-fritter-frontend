@@ -52,6 +52,7 @@
             v-for="freet in freets"
             :key="freet.id"
             :freet="freet"
+            @freet-update="handleFreetUpdate"
           />
         </section>
         <article
@@ -89,6 +90,9 @@ export default {
 
   },
   methods: {
+    handleFreetUpdate() {
+      this.getUserFreets(this.$route.params.username);
+    },
     async getUser(username) {
       const url = `/api/users/${username}`;
       const res = await fetch(url).then(async r => r.json());
